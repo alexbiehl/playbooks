@@ -43,9 +43,9 @@ singleton :: Name -> Value -> Task
 singleton n v = Task (Map.singleton n v)
 
 task :: Name -> TaskM a -> Task
-task name w = snd $ runWriter $ runTaskM $ do
+task name taskm = snd $ runWriter $ runTaskM $ do
   tell $ singleton "name" (ValueText name)
-  w
+  taskm
 
 sudo :: Bool -> TaskM ()
 sudo b = tell $ singleton "sudo" (ValueBool b)

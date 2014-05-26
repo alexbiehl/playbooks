@@ -1,4 +1,4 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE OverloadedStrings,  GeneralizedNewtypeDeriving #-}
 module Books.Module(
     ModuleM
   , Module
@@ -11,6 +11,7 @@ import Books.Types
 import qualified Books.Task as TA
 
 import Data.Monoid
+import qualified Data.Text as T
 import qualified Data.Map as Map
 
 import Control.Applicative (Applicative)
@@ -37,8 +38,11 @@ hoistModule m = do
     (a, w)       = runWriter $ runModuleM m
     Module modul = w
 
-entry :: Name -> Value -> ModuleM e ()
-entry name value = tell (singleton name value)
+freeForm :: T.Text -> ModuleM e ()
+freeForm = entry "free_form"
+
+entry :: ToValue a => Name -> a -> ModuleM e ()
+entry name value = tell $ singleton name (toValue value)
 
 empty :: Module a
 empty = Module Map.empty

@@ -14,13 +14,13 @@ copy :: ModuleM Copy () -> TaskM ()
 copy = hoistModule
 
 copySrc :: FilePath -> ModuleM Copy ()
-copySrc file = entry "src" (ValueText (pack file))
+copySrc = entry "src" . pack
 
 copyDest :: FilePath -> ModuleM Copy ()
-copyDest file = entry "dest" (ValueText (pack file))
+copyDest = entry "dest" . pack
 
 copyForce :: Bool -> ModuleM Copy ()
-copyForce force = entry "force" (ValueBool force)
+copyForce = entry "force"
 
 copyBackup :: Bool -> ModuleM Copy ()
-copyBackup backup = entry "backup" (ValueBool backup)
+copyBackup = entry "backup"
